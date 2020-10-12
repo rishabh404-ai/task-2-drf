@@ -76,16 +76,21 @@ class UserRegisterAPIView(generics.GenericAPIView):
             data       = {'email_body': email_body, 'to_email': user_email.email, 'email_subject': 'Thank You'}    
             Util.send_mail(data)
 
+        try :
+            register = UserRegister.objects.create(
+                                    name=name,idcard_no=idcard_no,id_type=id_type,address=address,phone_no=phone_no,email=email,meet_with=meet_with)
 
-        register = UserRegister.objects.create(
-                                name=name,idcard_no=idcard_no,id_type=id_type,address=address,phone_no=phone_no,email=email,meet_with=meet_with)
+            register.save()     
+            return Response({'status': 'success',
+                             'message':'Thank you for your details !',
+                             'data': serializer.data},status=status.HTTP_201_CREATED)        
 
-        register.save()     
-        return Response({'status': 'success',
-                         'message':'Thank you for your details !',
-                         'data': serializer.data},status=status.HTTP_201_CREATED)        
+        except:
+            raise ValidationError({'status':'failed',
+                                   'message':'Something went wrong. Please try again !',
+                                   'data':[]})  
 
-    
+            
     
 
 
