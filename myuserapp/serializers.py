@@ -2,11 +2,19 @@ from rest_framework import serializers
 from .models import UserRegister, UserRecord
 
 
+ID_CHOICES =( 
+        ("1", "PAN"), 
+        ("2", "Aadhar"), 
+        ("3", "VoterID"), 
+        ("4", "Others"), 
+    ) 
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     
     name      = serializers.CharField(required=True)
     idcard_no = serializers.IntegerField(required=True)
-    id_type   = serializers.CharField(required=True)
+    id_type   = serializers.ChoiceField(choices=ID_CHOICES,required=True)
     address   = serializers.CharField(required=True)
     phone_no  = serializers.CharField(required=True)
     email     = serializers.EmailField(required=True)
@@ -14,7 +22,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
     class Meta:
-        model = UserRegister
+        model  = UserRegister
         fields = ['name','idcard_no','id_type','address','phone_no','email','meet_with']
 
 
@@ -28,6 +36,6 @@ class UserRecordSerializer(serializers.ModelSerializer):
 
 
     class Meta:
-        model = UserRecord
+        model  = UserRecord
         fields = ['person','entry_time','exit_time']
 
