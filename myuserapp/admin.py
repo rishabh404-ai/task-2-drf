@@ -3,7 +3,7 @@ from .models import UserRegister,UserRecord
 
 
 class UserRegisterAdmin(admin.ModelAdmin):
-    list_display = ('name','idcard_no','id_type','address','phone_no','email','meet_with',)
+    list_display = ('id','name','idcard_no','id_type','address','phone_no','email','meet_with',)
     list_filter = ('name','idcard_no','id_type','address','phone_no','email','meet_with',)
     search_fields = ('name','idcard_no','id_type','address','phone_no','email','meet_with',)
 
