@@ -9,10 +9,8 @@ Database Used : **db.sqlite3
 
 Features Listed In The App :
 
-● User Registerations : (If new user is registered, email is sent with body "Hello New User, Welcome to our office for the very first time.")
-
-
-                        (If existing user registers, email is sent with body "Hello User,Welcome Back Again.")                          
+● User Registerations : > If new user is registered, email is sent with body "Hello New User, Welcome to our office for the very first time."
+                        > If existing user registers, email is sent with body "Hello User,Welcome Back Again."                          
 
 ● Staff recording users entry & exit time in office.
 
