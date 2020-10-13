@@ -29,10 +29,9 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class UserRecordSerializer(serializers.ModelSerializer):
-
-    name       = serializers.CharField(required=True)
-    entry_time = serializers.CharField(required=True)
-    exit_time  = serializers.CharField(required=True)
+        
+    entry_time = serializers.DateTimeField(required=True)
+    exit_time  = serializers.DateTimeField(required=True)
 
 
     class Meta:

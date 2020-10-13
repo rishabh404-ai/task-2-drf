@@ -95,6 +95,40 @@ class UserRegisterAPIView(generics.GenericAPIView):
 
 
 
-class UserRecordViewSet(viewsets.ModelViewSet):
+class UserRecordAPIView(generics.GenericAPIView):
     queryset = UserRecord.objects.all()
     serializer_class = UserRecordSerializer
+
+    def post(self,request):
+        serializer = self.serializer_class(request.data) 
+        person     = request.data['person']
+        entry_time = request.data.get('entry_time')
+        exit_time  = request.data.get('exit_time')
+   
+
+
+
+        if not person:
+            raise ValidationError({'status':'failed',
+                                   'message':'Name of the person is required !',
+                                   'data':[]})
+        
+        if not entry_time:
+            raise ValidationError({'status':'failed',
+                                   'message':'Entry time of the person is required !',
+                                   'data':[]})
+        
+        if not exit_time:
+            raise ValidationError({'status':'failed',
+                                   'message':'Exit time of the person is required !',
+                                   'data':[]})
+
+        record = UserRecord.objects.create(
+                                    person_id=person,entry_time=entry_time,exit_time=exit_time)
+
+        record.save()     
+        return Response({'status': 'success',
+                             'message':'Entries Recorded !',
+                             'data': serializer.data},status=status.HTTP_201_CREATED)        
+
+        
