@@ -12,6 +12,7 @@ ID_CHOICES =(
 
 
 class UserRegister(models.Model):
+    
     name      =   models.CharField(max_length=100)
     idcard_no =   models.IntegerField()
     id_type   =   models.CharField(max_length=1,choices=ID_CHOICES)

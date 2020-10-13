@@ -29,10 +29,9 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class UserRecordSerializer(serializers.ModelSerializer):
-        
+    person     = serializers.PrimaryKeyRelatedField(queryset = UserRegister.objects.all())    
     entry_time = serializers.DateTimeField(required=True)
     exit_time  = serializers.DateTimeField(required=True)
-
 
     class Meta:
         model  = UserRecord

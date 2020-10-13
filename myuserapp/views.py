@@ -8,6 +8,10 @@ from django.core.mail import send_mail
 from rest_framework import status
 from rest_framework.response import Response
 
+
+
+# Code Starts Here
+
 class UserRegisterAPIView(generics.GenericAPIView):
     queryset = UserRegister.objects.all()
     serializer_class = UserRegisterSerializer
@@ -22,6 +26,8 @@ class UserRegisterAPIView(generics.GenericAPIView):
         phone_no   = request.data.get('phone_no')
         email      = request.data.get('email')
         meet_with  = request.data.get('meet_with')
+
+
 
         if not name:
             raise ValidationError({'status':'failed',
@@ -60,12 +66,14 @@ class UserRegisterAPIView(generics.GenericAPIView):
         
 
 
+
         # Email Config For New User     
         if email:
             email_body = 'Hello New User, Welcome to our office for the very first time.'
             data       = {'email_body': email_body, 'to_email': email, 'email_subject': 'Thank You'}    
             Util.send_mail(data)
   
+
 
 
         # Email Config For Existing User  
@@ -76,14 +84,18 @@ class UserRegisterAPIView(generics.GenericAPIView):
             data       = {'email_body': email_body, 'to_email': user_email.email, 'email_subject': 'Thank You'}    
             Util.send_mail(data)
 
+
+
         try :
             register = UserRegister.objects.create(
                                     name=name,idcard_no=idcard_no,id_type=id_type,address=address,phone_no=phone_no,email=email,meet_with=meet_with)
 
             register.save()     
+
             return Response({'status': 'success',
                              'message':'Thank you for your details !',
                              'data': serializer.data},status=status.HTTP_201_CREATED)        
+
 
         except:
             raise ValidationError({'status':'failed',
@@ -101,11 +113,10 @@ class UserRecordAPIView(generics.GenericAPIView):
 
     def post(self,request):
         serializer = self.serializer_class(request.data) 
-        person     = request.data['person']
+        person     = request.data.get('person') # This variable is storing ID 
         entry_time = request.data.get('entry_time')
         exit_time  = request.data.get('exit_time')
-   
-
+     
 
 
         if not person:
@@ -123,12 +134,21 @@ class UserRecordAPIView(generics.GenericAPIView):
                                    'message':'Exit time of the person is required !',
                                    'data':[]})
 
-        record = UserRecord.objects.create(
-                                    person_id=person,entry_time=entry_time,exit_time=exit_time)
+                         
 
-        record.save()     
-        return Response({'status': 'success',
-                             'message':'Entries Recorded !',
-                             'data': serializer.data},status=status.HTTP_201_CREATED)        
+        try:
+            record = UserRecord.objects.create(
+                                        person_id=person,entry_time=entry_time,exit_time=exit_time)
+
+            record.save()     
+            
+            return Response({'status': 'success',
+                            'message':'Entries Recorded !',
+                            'data': {'person_id':person,'entry_time':entry_time,'exit_time':exit_time},
+                            },status=status.HTTP_201_CREATED)        
 
         
+        except:
+            raise ValidationError({'status':'failed',
+                                   'message':'Something went wrong. Please try again !',
+                                   'data':[]})
