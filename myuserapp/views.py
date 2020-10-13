@@ -79,9 +79,9 @@ class UserRegisterAPIView(generics.GenericAPIView):
         # Email Config For Existing User  
         if UserRegister.objects.filter(email=email).exists():
 
-            user_email = UserRegister.objects.get(email=email)
+            user_email = UserRegister.objects.filter(email=email)
             email_body = 'Hello User,Welcome Back Again.'
-            data       = {'email_body': email_body, 'to_email': user_email.email, 'email_subject': 'Thank You'}    
+            data       = {'email_body': email_body, 'to_email': user_email, 'email_subject': 'Thank You'}    
             Util.send_mail(data)
 
 
@@ -94,6 +94,7 @@ class UserRegisterAPIView(generics.GenericAPIView):
 
             return Response({'status': 'success',
                              'message':'Thank you for your details !',
+                             'email': 'Sent ! Please check the console.',
                              'data': serializer.data},status=status.HTTP_201_CREATED)        
 
 
@@ -141,7 +142,7 @@ class UserRecordAPIView(generics.GenericAPIView):
                                         person_id=person,entry_time=entry_time,exit_time=exit_time)
 
             record.save()     
-            
+
             return Response({'status': 'success',
                             'message':'Entries Recorded !',
                             'data': {'person_id':person,'entry_time':entry_time,'exit_time':exit_time},
