@@ -33,6 +33,7 @@ class UserRecordSerializer(serializers.ModelSerializer):
     entry_time = serializers.DateTimeField(required=True)
     exit_time  = serializers.DateTimeField(required=True)
 
+
     class Meta:
         model  = UserRecord
         fields = ['person','entry_time','exit_time']
